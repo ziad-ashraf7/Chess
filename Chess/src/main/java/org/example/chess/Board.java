@@ -12,7 +12,7 @@ public class Board {
     public static GridPane chessBoard = new GridPane();
 
 
-    Pane root = new Pane();
+    static Pane root = new Pane();
     public static Tiel[][] board_tiels =new Tiel[8][8];
     public static Stage stage=new Stage();
 

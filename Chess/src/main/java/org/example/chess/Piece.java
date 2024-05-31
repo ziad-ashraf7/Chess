@@ -13,9 +13,9 @@ import static org.example.chess.Board.*;
 
 import java.util.ArrayList;
 
-import java.util.ArrayList;
 
 abstract public class Piece extends ImageView {
+
     Color color ;
     int row , col ;
     public boolean isProtected = false;
@@ -35,7 +35,6 @@ abstract public class Piece extends ImageView {
         if(!getTielByName(move).isoOccupied){
             getTielByName(move).isoOccupied=true;
             getTielByName(move).setPiece(this);
-
             getTielByName((this.row+" "+this.col)).isoOccupied=false;
             boolean changed=false;
             if(Game.isKingChecked()){
@@ -46,13 +45,13 @@ abstract public class Piece extends ImageView {
                 changed=true;
                 return false;
             }
-            if(!changed){
+            else{
                 getTielByName(move).isoOccupied=false;
                 getTielByName(move).setPiece(null);
 
                 getTielByName((this.row+" "+this.col)).isoOccupied=true;
+                return true;
             }
-            return true;
         }
         else{
             Piece oldPiece = getTielByName(move).getPiece();
@@ -139,7 +138,6 @@ abstract public class Piece extends ImageView {
         return false;
     }
     abstract public void calcProtectedTiels();
-
 
 
 }

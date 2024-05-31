@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class Rook extends Piece{
+
     public boolean moved_before=false;
     Rook(Color color, int row, int col) {
         super(color, row, col);
@@ -20,18 +21,272 @@ public class Rook extends Piece{
         }
     }
 
-    @Override
-    public boolean searchForKing() {
-        return false;
-    }
 
     @Override
     protected void storeAllPossibleMoves() {
-
+        HMoves();
+        VMoves();
     }
+
 
     @Override
     public void calcProtectedTiels() {
+        for (int row = this.row+1; row <8 ; row++) {
+            String move = row+" "+this.col;
+            if(!getTielByName(move).isoOccupied){
+                getTielByName(move).isProtected = true;
+
+            }
+            else if(getTielByName(move).getPiece().color == this.color){
+                getTielByName(move).isProtected=true;
+                break;
+            }
+            else{
+                break;
+            }
+        }
+        for (int row = this.row-1; row >= 0 ; row--) {
+            String move = row+" "+this.col;
+            if(!getTielByName(move).isoOccupied){
+                getTielByName(move).isProtected = true;
+
+            }
+            else if(getTielByName(move).getPiece().color == this.color){
+                getTielByName(move).isProtected=true;
+                break;
+            }
+            else {
+                break;
+            }
+        }
+
+
+        for (int col = this.col+1; col <8 ; col++) {
+            String move = this.row+" "+col;
+
+            if(!getTielByName(move).isoOccupied){
+                getTielByName(move).isProtected = true;
+
+
+            }
+            else if(getTielByName(move).getPiece().color == this.color){
+                getTielByName(move).isProtected=true;
+                break;
+            }
+            else{
+                break;
+            }
+            // another color of the piece
+
+
+        }
+        for (int col = this.col-1; col >= 0 ; col--) {
+            String move = this.row+" "+col;
+
+            if(!getTielByName(move).isoOccupied){
+                getTielByName(move).isProtected = true;
+
+            }
+            else if(getTielByName(move).getPiece().color == this.color){
+                getTielByName(move).isProtected=true;
+                break;
+            }
+            else {
+                break;
+            }
+
+
+        }
+
+
+    }
+
+
+    private void HMoves() {
+        for (int row = this.row+1; row <8 ; row++) {
+            String move = row+" "+this.col;
+            if(!getTielByName(move).isoOccupied){
+                if(isValid(move)){
+                    possMoves.add(move);
+                }
+
+            }
+            else if(getTielByName(move).getPiece().color == this.color){
+                break;
+            }
+            else{
+                if(getTielByName(move).getPiece().piece_type.equals("king")){
+                    possMoves.add(move+"kng");
+                }
+                else{
+                    if(isValid(move)){
+                        possMoves.add(move+'k');
+                    }
+                }                break;
+            }
+        }
+
+
+
+
+
+        for (int row = this.row-1; row >= 0 ; row--) {
+            String move = row+" "+this.col;
+            if(!getTielByName(move).isoOccupied){
+                if(isValid(move)){
+
+                    possMoves.add(move);
+                }
+
+            }
+            else if(getTielByName(move).getPiece().color == this.color){
+                break;
+            }
+            else{
+                if(getTielByName(move).getPiece().piece_type.equals("king")){
+                    possMoves.add(move+"kng");
+                }
+                else{
+                    if (isValid(move)) {
+
+                        possMoves.add(move+'k');
+
+                    }
+                }                break;
+            }
+        }
+    }
+
+    private void VMoves() {
+        for (int col = this.col+1; col <8 ; col++) {
+            String move = this.row+" "+col;
+
+            if(!getTielByName(move).isoOccupied){
+                if(isValid(move)){
+                    possMoves.add(move);
+
+                }
+
+
+            }
+            else if(getTielByName(move).getPiece().color == this.color){
+                break;
+            }
+            // another color of the piece
+            else{
+                if(getTielByName(move).getPiece().piece_type.equals("king")){
+                    possMoves.add(move+"kng");
+                }
+                else{
+                    if(isValid(move)){
+                        possMoves.add(move+'k');
+
+                    }
+                    break;
+                }
+
+            }
+
+        }
+        for (int col = this.col-1; col >= 0 ; col--) {
+            String move = this.row+" "+col;
+
+            if(!getTielByName(move).isoOccupied){
+                if(isValid(move)){
+                    possMoves.add(move);
+
+                }
+
+            }
+            else if(getTielByName(move).getPiece().color == this.color){
+                break;
+            }
+            else{
+                if(getTielByName(move).getPiece().piece_type.equals("king")){
+                    possMoves.add(move+"kng");
+                }
+                else{
+                    if(isValid(move)){
+                        possMoves.add(move+'k');
+                    }
+
+                    break;
+                }
+            }
+
+        }
+    }
+
+
+
+    @Override
+    public boolean searchForKing() {
+        for (int row = this.row+1; row <8 ; row++) {
+            String move = row+" "+this.col;
+            if(getTielByName(move).isoOccupied){
+                if(getTielByName(move).getPiece().color != this.color){
+                    if(getTielByName(move).getPiece().piece_type.equals("king")){
+                        return true;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                else break;
+            }
+
+        }
+        for (int row = this.row-1; row >= 0 ; row--) {
+            String move = row+" "+this.col;
+
+            if(getTielByName(move).isoOccupied){
+                if(getTielByName(move).getPiece().color != this.color){
+                    if(getTielByName(move).getPiece().piece_type.equals("king")){
+                        return true;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                else break;
+            }
+
+
+        }
+        for (int col = this.col+1; col <8 ; col++) {
+            String move = this.row+" "+col;
+
+            if(getTielByName(move).isoOccupied){
+                if(getTielByName(move).getPiece().color != this.color){
+                    if(getTielByName(move).getPiece().piece_type.equals("king")){
+                        return true;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                else break;
+            }
+
+        }
+        for (int col = this.col-1; col >= 0 ; col--) {
+            String move = this.row+" "+col;
+
+            if(getTielByName(move).isoOccupied){
+                if(getTielByName(move).getPiece().color != this.color){
+                    if(getTielByName(move).getPiece().piece_type.equals("king")){
+                        return true;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                else break;
+            }
+
+        }
+        return false;
+
 
     }
 

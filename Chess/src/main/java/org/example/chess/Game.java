@@ -2,11 +2,15 @@ package org.example.chess;
 
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 public class Game {
+
     static boolean playerWhiteTurn;
     boolean PlayerBlackTurn = false;
 
@@ -17,8 +21,7 @@ public class Game {
 
 
 
-
-
+    Board board;
 
     public void startGame() {
         Board board = new Board();
@@ -26,15 +29,13 @@ public class Game {
 //        calcProtectedPieces();
         calcProtectedTiels();
     }
-
-
     Game(){
         currPiece=null;
         isKingChecked = false;
         playerWhiteTurn=true;
-
         addEventHandlers(Board.chessBoard );
     }
+
     private void addEventHandlers(GridPane chessBoard ) {
 
         chessBoard.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -68,7 +69,6 @@ public class Game {
                                 currPiece = newPiece;
                                 if((currPiece.color == Color.WHITE && !playerWhiteTurn) || (currPiece.color == Color.BLACK &&playerWhiteTurn)){
                                     currPiece = null;
-
                                     return;
                                 }
                                 selectPiece(newPiece);
@@ -174,32 +174,462 @@ public class Game {
 
     }
 
-    public static boolean isKingChecked() {
-        return false;
-    }
+    private static void reverseBoard() {
+        System.out.println("Revesing");
+        if(Board.root.getRotate()==180){
+            Board.root.setRotate(0);
+        }
+        else{
+            Board.root.setRotate(180);
 
-    private void selectPiece(Piece newPiece) {
-    }
+        }
+        for (int row = 0; row < 8; row++) {
+            for (int coll = 0; coll < 8; coll++) {
+                if(Board.board_tiels[row][coll].getRotate()==180){
+                    Board.board_tiels[row][coll].setRotate(0);
+                }
+                else{
 
-    private void deselectPiece(Piece currPiece) {
-    }
+                    Board.board_tiels[row][coll].setRotate(180);
+                }
 
-    private void killPiece(Tiel tiel) {
-    }
+            }
+        }
 
-    private void isGameOver() {
+        System.out.println("Revesed");
+        Tiel[][] temp = new Tiel[8][8];
+
+//        for (int row = 0; row < 8; row++) {
+//            for (int col = 0; col < 8; col++) {
+//                temp[col][row] = Board.board_tiels[row][col];
+//            }
+//        }
+//        for (int row = 0; row < 8; row++) {
+//            for (int coll = 0; coll < 8; coll++) {
+//                 Board.board_tiels[row][coll] = temp[row][coll];
+//            }
+//        }
+
     }
 
     private void checkFroPeromtions() {
+        if(playerWhiteTurn){
+            promotBlack();
+        }
+        else{
+            promotWhite();
+        }
+
+
     }
 
-    private void changPlayer(boolean b) {
+    private void promotWhite() {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                final String[] selected_choic = {""};
+                if(Board.board_tiels[row][col].isoOccupied &&
+                        Board.board_tiels[row][col].getPiece().color ==Color.WHITE &&
+                        Board.board_tiels[row][col].getPiece().piece_type.equals("pawn") &&
+                        Board.board_tiels[row][col].getPiece().row==0 )
+                {
+                    Pane root = new Pane();
+                    Tiel[] choices = new Tiel[4];
+                    GridPane Pieces = new GridPane();
+                    Stage stage = new Stage();
+                    Scene scene = new Scene(root , 405, 100);
+                    root.getChildren().addAll(Pieces);
+
+                    stage.setScene(scene);
+                    stage.show();
+                    for (int col1 = 0; col1 < 4; col1++) {
+                        Tiel tiel = new Tiel();
+                        tiel.setPrefWidth(100);
+                        tiel.setPrefHeight(100);
+                        tiel.setStyle("-fx-background-color: rgb(5, 20 , 50); -fx-border-color: black; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-end-margin: 10px");
+
+                        Pieces.add(tiel, col1 , 1 );
+                        choices[col1] = tiel;
+                        int finalCol1 = col1;
+                        int finalRow = row;
+                        int finalCol = col;
+                        choices[col1].setOnMouseClicked(event -> {
+                            System.out.println(choices[finalCol1].getPiece().piece_type);
+                            selected_choic[0] =choices[finalCol1].getPiece().piece_type;
+                            System.out.println(selected_choic[0]);
+                            if(selected_choic[0].equals("queen")){
+                                System.out.println("entede the if");
+                                Board.board_tiels[finalRow][finalCol].getChildren().remove(0);
+                                Board.board_tiels[finalRow][finalCol].addPiece(new Queen(Color.WHITE , finalRow , finalCol));
+                            } else if (selected_choic[0].equals("rook")) {
+                                Board.board_tiels[finalRow][finalCol].getChildren().remove(0);
+                                Board.board_tiels[finalRow][finalCol].addPiece(new Rook(Color.WHITE , finalRow , finalCol));
+                            } else if (selected_choic[0].equals("bishop")) {
+                                Board.board_tiels[finalRow][finalCol].getChildren().remove(0);
+                                Board.board_tiels[finalRow][finalCol].addPiece(new Bishop(Color.WHITE , finalRow , finalCol));
+                            }
+                            else {
+                                Board.board_tiels[finalRow][finalCol].getChildren().remove(0);
+                                Board.board_tiels[finalRow][finalCol].addPiece(new Knight(Color.WHITE , finalRow , finalCol));
+                            }
+                            stage.close();
+                            if (isKingChecked()){
+                                isGameOver();
+                            }
+                            return;
+                        });
+                    }
+                    choices[0].addPiece(new Queen(Color.WHITE , 1 , 0));
+                    choices[1].addPiece(new Rook(Color.WHITE , 1 , 1));
+                    choices[2].addPiece(new Knight(Color.WHITE , 1 , 2));
+                    choices[3].addPiece(new Bishop(Color.WHITE , 1 , 3));
+
+
+                }
+
+
+            }
+        }
     }
 
-    private void movePiece(Tiel tiel) {
+    private void promotBlack() {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                final String[] selected_choic = {""};
+                if(Board.board_tiels[row][col].isoOccupied &&
+                        Board.board_tiels[row][col].getPiece().color ==Color.BLACK &&
+                        Board.board_tiels[row][col].getPiece().piece_type.equals("pawn") &&
+                        Board.board_tiels[row][col].getPiece().row==7){
+                    Pane root = new Pane();
+                    Tiel[] choices = new Tiel[4];
+                    GridPane Pieces = new GridPane();
+                    Stage stage = new Stage();
+                    Scene scene = new Scene(root , 405, 100);
+                    root.getChildren().addAll(Pieces);
+
+                    stage.setScene(scene);
+                    stage.show();
+                    for (int col1 = 0; col1 < 4; col1++) {
+                        Tiel tiel = new Tiel();
+                        tiel.setPrefWidth(100);
+                        tiel.setPrefHeight(100);
+                        tiel.setStyle("-fx-background-color: rgb(12,210,205); -fx-border-color: black; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-end-margin: 10px");
+
+                        Pieces.add(tiel, col1 , 1 );
+                        choices[col1] = tiel;
+                        int finalCol1 = col1;
+                        int finalRow = row;
+                        int finalCol = col;
+                        choices[col1].setOnMouseClicked(event -> {
+                            System.out.println(choices[finalCol1].getPiece().piece_type);
+                            selected_choic[0] =choices[finalCol1].getPiece().piece_type;
+                            System.out.println(selected_choic[0]);
+                            if(selected_choic[0].equals("queen")){
+                                System.out.println("entede the if");
+                                Board.board_tiels[finalRow][finalCol].getChildren().remove(0);
+                                Board.board_tiels[finalRow][finalCol].addPiece(new Queen(Color.BLACK , finalRow , finalCol));
+                            } else if (selected_choic[0].equals("rook")) {
+                                Board.board_tiels[finalRow][finalCol].getChildren().remove(0);
+                                Board.board_tiels[finalRow][finalCol].addPiece(new Rook(Color.BLACK , finalRow , finalCol));
+                            } else if (selected_choic[0].equals("bishop")) {
+                                Board.board_tiels[finalRow][finalCol].getChildren().remove(0);
+                                Board.board_tiels[finalRow][finalCol].addPiece(new Bishop(Color.BLACK , finalRow , finalCol));
+                            }
+                            else {
+                                Board.board_tiels[finalRow][finalCol].getChildren().remove(0);
+                                Board.board_tiels[finalRow][finalCol].addPiece(new Knight(Color.BLACK , finalRow , finalCol));
+                            }
+                            stage.close();
+                            if (isKingChecked()){
+                                isGameOver();
+                            }
+                            return;
+                        });
+                    }
+                    choices[0].addPiece(new Queen(Color.BLACK, 1 , 0));
+                    choices[1].addPiece(new Rook(Color.BLACK, 1 , 1));
+                    choices[2].addPiece(new Knight(Color.BLACK , 1 , 2));
+                    choices[3].addPiece(new Bishop(Color.BLACK , 1 , 3));
+
+                }
+            }
+        }
     }
-    private void calcProtectedTiels() {
+
+
+    private void killPiece(Tiel tiel) {
+        tiel.getChildren().remove(0);
+        tiel.isoOccupied=true;
+        selectPiece(currPiece);
+        movePiece(tiel);
+
     }
+
+    private void deselectPiece(Piece p){
+        currPiece.hidePossMoves();
+        currPiece = null;
+
+    }
+    public static void movePiece(Tiel toTiel){
+
+        Tiel oldTiel = (Tiel) currPiece.getParent();
+        toTiel.getChildren().add(currPiece);
+        toTiel.isoOccupied=true;
+        toTiel.setPiece(currPiece);
+        oldTiel.getChildren().removeAll();
+        oldTiel.setPiece(null);
+        oldTiel.isoOccupied = false;
+        currPiece.hidePossMoves();
+        currPiece.col=toTiel.col;
+        currPiece.row=toTiel.row;
+        reverseBoard();
+        if(currPiece.piece_type.equals("rook")){
+            Rook rook = (Rook) currPiece;
+            rook.moved_before=true;
+        }
+        else if(currPiece.piece_type.equals("king")){
+            King king =(King) currPiece;
+            king.moved_before=true;
+
+        }
+        currPiece=null;
+//        calcProtectedPieces();
+        calcProtectedTiels();
+
+    }
+
+    public static boolean searchForBlackCheck(){
+        isKingChecked = false;
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if( Board.board_tiels[row][col].isoOccupied && Board.board_tiels[row][col].getPiece().color == Color.BLACK){
+//                        Board.board_tiels[row][col].getPiece().possMoves.clear();
+//                        Board.board_tiels[row][col].getPiece().storeAllPossibleMoves();
+//                        for(String i : Board.board_tiels[row][col].getPiece().possMoves){
+                    if(Board.board_tiels[row][col].getPiece().searchForKing()){
+                        System.out.println("White King Checked");
+                        Game.isKingChecked = true;
+                        return true;
+                    }
+                    Board.board_tiels[row][col].getPiece().possMoves.clear();
+
+//                        }
+                }
+            }
+        }
+        Game.isKingChecked = false;
+        return false;
+    }
+    public static boolean isKingChecked() {
+        if(playerWhiteTurn){
+//            System.out.println("*********calc Black check************* ");
+            return searchForBlackCheck();
+        }
+        else{
+            return searchWhiteCheck();
+        }
+    }
+    public static boolean searchWhiteCheck(){
+//        System.out.println("*********calc white check*************");
+        isKingChecked = false;
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if(Board.board_tiels[row][col].isoOccupied && Board.board_tiels[row][col].getPiece().color == Color.WHITE ){
+//                    Board.board_tiels[row][col].getPiece().possMoves.clear();
+//                    Board.board_tiels[row][col].getPiece().storeAllPossibleMoves();
+//                    for(String i : Board.board_tiels[row][col].getPiece().possMoves){
+                    if(Board.board_tiels[row][col].getPiece().searchForKing()){
+                        System.out.println("Black King Checked");
+                        Game.isKingChecked=true;
+                        Board.board_tiels[row][col].getPiece().possMoves.clear();
+
+                        return true;
+                    }
+                    Board.board_tiels[row][col].getPiece().possMoves.clear();
+
+
+//                    }
+                }
+            }
+        }
+        Game.isKingChecked = false;
+
+        return false;
+
+    }
+
+
+
+
+
+    private void selectPiece(Piece p){
+        currPiece=p;
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if(Board.board_tiels[row][col].isoOccupied && Board.board_tiels[row][col].getPiece() != null){
+                    Board.board_tiels[row][col].getPiece().possMoves.clear();
+                }
+            }
+        }
+        System.out.println("SLECTing ");
+        currPiece.storeAllPossibleMoves();
+        System.out.println("SLECTED ");
+        currPiece.showAllPossMoves();
+
+    }
+    private static void changPlayer(boolean b) {
+        if(b){
+            if(playerWhiteTurn){
+                playerWhiteTurn = false ;
+                currPiece = null;
+            }
+            else{
+                playerWhiteTurn = true ;
+                currPiece = null;
+            }
+        }
+    }
+
+
+    void isGameOver(){
+        if(playerWhiteTurn){
+            boolean kingCanMove=false;
+            boolean piecesCanMove = false;
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    if(Board.board_tiels[row][col].isoOccupied &&Board.board_tiels[row][col].getPiece().color ==Color.WHITE && Board.board_tiels[row][col].getPiece().piece_type.equals("king") ){
+                        Board.board_tiels[row][col].getPiece().storeAllPossibleMoves();
+                        if(!Board.board_tiels[row][col].getPiece().possMoves.isEmpty()){
+                            kingCanMove=true;
+                        }
+                        else {
+                            Board.board_tiels[row][col].getPiece().storeAllPossibleMoves();
+                        }
+                    }
+                }
+            }
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    if(Board.board_tiels[row][col].isoOccupied &&Board.board_tiels[row][col].getPiece().color ==Color.WHITE  ){
+                        Board.board_tiels[row][col].getPiece().storeAllPossibleMoves();
+                        if(!Board.board_tiels[row][col].getPiece().possMoves.isEmpty()){
+                            piecesCanMove=true;
+                        }
+                        else {
+                            Board.board_tiels[row][col].getPiece().storeAllPossibleMoves();
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+
+
+            if(!kingCanMove && !piecesCanMove){
+                System.out.println("GAME OVER Player Black Win");
+                Board.stage.close();
+            }
+        }
+        else {
+            boolean kingCanMove=false;
+            boolean piecesCanMove = false;
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    if(Board.board_tiels[row][col].isoOccupied &&Board.board_tiels[row][col].getPiece().color ==Color.BLACK && Board.board_tiels[row][col].getPiece().piece_type.equals("king") ){
+                        Board.board_tiels[row][col].getPiece().storeAllPossibleMoves();
+                        if(!Board.board_tiels[row][col].getPiece().possMoves.isEmpty()){
+                            kingCanMove=true;
+                        }
+                        else {
+                            Board.board_tiels[row][col].getPiece().storeAllPossibleMoves();
+                        }
+                    }
+                }
+            }
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    if(Board.board_tiels[row][col].isoOccupied &&Board.board_tiels[row][col].getPiece().color ==Color.BLACK  ){
+                        Board.board_tiels[row][col].getPiece().storeAllPossibleMoves();
+                        if(!Board.board_tiels[row][col].getPiece().possMoves.isEmpty()){
+                            piecesCanMove=true;
+                        }
+                        else {
+                            Board.board_tiels[row][col].getPiece().storeAllPossibleMoves();
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+
+
+            if(!kingCanMove && !piecesCanMove){
+                System.out.println("GAME OVER Player White Win");
+                Board.stage.close();
+            }
+
+        }
+    }
+
+    private static void calcProtectedPieces(){
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if(Board.board_tiels[row][col].isoOccupied){
+                    Board.board_tiels[row][col].getPiece().isProtected=false;
+                }
+            }
+        }
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if(Board.board_tiels[row][col].isoOccupied){
+                    Board.board_tiels[row][col].getPiece().calcProtectedTiels();
+                }
+            }
+        }
+    }
+    private static void calcProtectedTiels(){
+        if(playerWhiteTurn){
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    Board.board_tiels[row][col].isProtected=false;
+
+                }
+            }
+
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    if(Board.board_tiels[row][col].isoOccupied && Board.board_tiels[row][col].getPiece().color != Color.WHITE){
+                        Board.board_tiels[row][col].getPiece().calcProtectedTiels();
+                    }
+                }
+            }
+        }
+        else {
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    Board.board_tiels[row][col].isProtected=false;
+
+                }
+            }
+
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    if(Board.board_tiels[row][col].isoOccupied && Board.board_tiels[row][col].getPiece().color != Color.BLACK){
+                        Board.board_tiels[row][col].getPiece().calcProtectedTiels();
+                    }
+                }
+            }
+        }
+
+    }
+
 
 
 }
