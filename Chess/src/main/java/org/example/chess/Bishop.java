@@ -23,7 +23,7 @@ public class Bishop extends Piece{
 
 
     @Override
-    public boolean searchForKing() {
+    public Piece searchForKing() {
         String move;
         int row = this.row-1 ; int col = this.col-1;
         while (row >= 0 && col >= 0){
@@ -32,7 +32,7 @@ public class Bishop extends Piece{
             if(getTielByName(move).isoOccupied){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
                     else{
                         break;
@@ -53,7 +53,7 @@ public class Bishop extends Piece{
             if(getTielByName(move).isoOccupied){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
                     else{
                         break;
@@ -74,7 +74,7 @@ public class Bishop extends Piece{
             if(getTielByName(move).isoOccupied){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
                     else{
                         break;
@@ -97,7 +97,7 @@ public class Bishop extends Piece{
             if(getTielByName(move).isoOccupied){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
                     else{
                         break;
@@ -111,7 +111,7 @@ public class Bishop extends Piece{
             row++;
             col--;
         }
-        return false;
+        return null;
     }
 
     @Override

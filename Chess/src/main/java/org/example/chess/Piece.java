@@ -1,10 +1,8 @@
 package org.example.chess;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.effect.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -74,7 +72,7 @@ abstract public class Piece extends ImageView {
 
         }
     }
-    abstract public boolean searchForKing();
+    abstract public Piece searchForKing();
     abstract protected void storeAllPossibleMoves();
 
     public static Tiel getTielByName(String search ){

@@ -22,13 +22,13 @@ public class Knight extends Piece {
     }
 
     @Override
-    public boolean searchForKing() {
+    public Piece searchForKing() {
         String move ;
         move = (this.row+2)+" "+(this.col-1);
         if(isValid((this.row+2) , (this.col-1))){
             if(getTielByName(move).isoOccupied && getTielByName(move).getPiece().color!=this.color){
                 if(getTielByName(move).getPiece().piece_type.equals("king")){
-                    return true;
+                    return getTielByName(move).getPiece();
                 }
 
             }
@@ -38,7 +38,7 @@ public class Knight extends Piece {
         if(isValid((this.row+2) , (this.col+1))){
             if(getTielByName(move).isoOccupied && getTielByName(move).getPiece().color!=this.color){
                 if(getTielByName(move).getPiece().piece_type.equals("king")){
-                    return true;
+                    return getTielByName(move).getPiece();
                 }
 
             }
@@ -53,7 +53,7 @@ public class Knight extends Piece {
         if(isValid((this.row-2), (this.col-1))){
             if(getTielByName(move).isoOccupied && getTielByName(move).getPiece().color!=this.color){
                 if(getTielByName(move).getPiece().piece_type.equals("king")){
-                    return true;
+                    return getTielByName(move).getPiece();
                 }
 
             }
@@ -68,7 +68,7 @@ public class Knight extends Piece {
         if(isValid((this.row-2) , (this.col+1))){
             if(getTielByName(move).isoOccupied && getTielByName(move).getPiece().color!=this.color){
                 if(getTielByName(move).getPiece().piece_type.equals("king")){
-                    return true;
+                    return getTielByName(move).getPiece();
                 }
 
             }
@@ -82,7 +82,7 @@ public class Knight extends Piece {
         if(isValid((this.row+1) , (this.col+2))){
             if(getTielByName(move).isoOccupied && getTielByName(move).getPiece().color!=this.color){
                 if(getTielByName(move).getPiece().piece_type.equals("king")){
-                    return true;
+                    return getTielByName(move).getPiece();
                 }
 
             }
@@ -97,7 +97,7 @@ public class Knight extends Piece {
         if(isValid((this.row-1) , (this.col+2))){
             if(getTielByName(move).isoOccupied && getTielByName(move).getPiece().color!=this.color){
                 if(getTielByName(move).getPiece().piece_type.equals("king")){
-                    return true;
+                    return getTielByName(move).getPiece();
                 }
 
             }
@@ -111,7 +111,7 @@ public class Knight extends Piece {
         if(isValid((this.row+1) , (this.col-2))){
             if(getTielByName(move).isoOccupied && getTielByName(move).getPiece().color!=this.color){
                 if(getTielByName(move).getPiece().piece_type.equals("king")){
-                    return true;
+                    return getTielByName(move).getPiece();
                 }
 
             }
@@ -125,14 +125,14 @@ public class Knight extends Piece {
         if(isValid((this.row-1) , (this.col-2))){
             if(getTielByName(move).isoOccupied && getTielByName(move).getPiece().color!=this.color){
                 if(getTielByName(move).getPiece().piece_type.equals("king")){
-                    return true;
+                    return getTielByName(move).getPiece();
                 }
 
             }
 
 
         }
-        return false;
+        return null;
     }
 
     @Override

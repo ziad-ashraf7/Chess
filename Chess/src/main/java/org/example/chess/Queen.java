@@ -22,13 +22,13 @@ public class Queen extends Piece {
 
 
     @Override
-    public boolean searchForKing() {
+    public Piece searchForKing() {
         for (int row = this.row+1; row <8 ; row++) {
             String move = row+" "+this.col;
             if(getTielByName(move).isoOccupied){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
                     else{
                         break;
@@ -44,7 +44,7 @@ public class Queen extends Piece {
             if(getTielByName(move).isoOccupied){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
                     else{
                         break;
@@ -62,7 +62,7 @@ public class Queen extends Piece {
             if(getTielByName(move).isoOccupied){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
                     else{
                         break;
@@ -79,7 +79,7 @@ public class Queen extends Piece {
             if(getTielByName(move).isoOccupied){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
                     else{
                         break;
@@ -104,7 +104,7 @@ public class Queen extends Piece {
             if(getTielByName(move).isoOccupied){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
                     else{
                         break;
@@ -125,7 +125,7 @@ public class Queen extends Piece {
             if(getTielByName(move).isoOccupied){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
                     else{
                         break;
@@ -146,7 +146,7 @@ public class Queen extends Piece {
             if(getTielByName(move).isoOccupied){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
                     else{
                         break;
@@ -169,7 +169,7 @@ public class Queen extends Piece {
             if(getTielByName(move).isoOccupied){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
                     else{
                         break;
@@ -185,7 +185,7 @@ public class Queen extends Piece {
         }
 
 
-        return false;
+        return null;
     }
 
     @Override

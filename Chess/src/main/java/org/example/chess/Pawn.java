@@ -33,8 +33,8 @@ public class Pawn extends Piece{
 
     }
     @Override
-    public boolean searchForKing() {
-        return false;
+    public Piece searchForKing() {
+        return null;
     }
 
     @Override

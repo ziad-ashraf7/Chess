@@ -22,13 +22,13 @@ public class King extends Piece {
     }
 
     @Override
-    public boolean searchForKing() {
+    public Piece searchForKing() {
         String move = (this.row+1)+" "+(this.col+1);
         if( isValid((this.row+1) ,(this.col+1))  ){
             if(getTielByName(move).isoOccupied ){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
 
                 }
@@ -41,7 +41,7 @@ public class King extends Piece {
             if(getTielByName(move).isoOccupied ){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
 
                 }
@@ -54,7 +54,7 @@ public class King extends Piece {
             if(getTielByName(move).isoOccupied ){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
 
                 }
@@ -67,7 +67,7 @@ public class King extends Piece {
             if(getTielByName(move).isoOccupied ){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
 
                 }
@@ -81,7 +81,7 @@ public class King extends Piece {
             if(getTielByName(move).isoOccupied ){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
 
                 }
@@ -95,7 +95,7 @@ public class King extends Piece {
             if(getTielByName(move).isoOccupied ){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
 
                 }
@@ -109,7 +109,7 @@ public class King extends Piece {
             if(getTielByName(move).isoOccupied ){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
 
                 }
@@ -123,7 +123,7 @@ public class King extends Piece {
             if(getTielByName(move).isoOccupied ){
                 if(getTielByName(move).getPiece().color != this.color){
                     if(getTielByName(move).getPiece().piece_type.equals("king")){
-                        return true;
+                        return getTielByName(move).getPiece();
                     }
 
                 }
@@ -132,7 +132,7 @@ public class King extends Piece {
         }
 
 
-        return false;
+        return null;
 
 
     }
