@@ -1,2 +1,10 @@
 # Chess
-A Chess GUI Game using JavaFX 
+## About
+
+## Screenshots
+
+## UML Diagrams
+### Class Diagram:- 
+### Use Case Diagram:-
+
+
