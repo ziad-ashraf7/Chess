@@ -6,6 +6,7 @@
   interaction (not resulting in checkmate), utilizing JavaFX built-in functions.
 - This game was made mainly to master the OOP Pillars and some SOLID principles for self-education.
 - I used Piece `abstract Class` to serve the Abstration pillar by making `abstract methodes` and let every different piece implement its own logic.
+
   **You can try the game by Cloning the Repo, Running the main method, and Enjoy :)**
   ---
   **!! By having any problem in the running process, you can open an issue and I'll be more than happy to help you <3 !!**
