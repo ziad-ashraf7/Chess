@@ -210,7 +210,6 @@ public class Queen extends Piece {
             if(!getTielByName(move).isoOccupied){
                 if (isValid(move)){
                     possMoves.add(move);
-
                 }
             }
             else{

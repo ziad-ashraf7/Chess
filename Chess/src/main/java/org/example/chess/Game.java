@@ -12,6 +12,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import javax.sound.sampled.AudioFileFormat;
+
 public class Game {
 
     static boolean playerWhiteTurn;
@@ -110,11 +112,13 @@ public class Game {
                                             Tiel rookTiel = Piece.getTielByName(row + " " + (col + 1));
                                             currPiece = rookTiel.getPiece();
                                             movePiece(Piece.getTielByName(row + " " + (col - 1)));
+                                            reverseBoard();
                                             changPlayer(true);
                                         } else {
                                             Tiel rookTiel = Piece.getTielByName(row + " " + (col - 2));
                                             currPiece = rookTiel.getPiece();
                                             movePiece(Piece.getTielByName(row + " " + (col + 1)));
+                                            reverseBoard();
                                             changPlayer(true);
                                         }
 
@@ -390,8 +394,6 @@ public class Game {
                     if (Board.board_tiels[row][col].getPiece().searchForKing() != null) {
                         System.out.println("White King Checked");
                         Game.isKingChecked = true;
-                        Piece king = Board.board_tiels[row][col].getPiece().searchForKing();
-                        Board.board_tiels[king.row][king.col].setBackground(new Background(new BackgroundFill(Color.rgb(200, 7, 7), CornerRadii.EMPTY, Insets.EMPTY)));
 
                         return true;
                     }
@@ -401,15 +403,15 @@ public class Game {
                 }
             }
         }
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                if ((row + col) % 2 == 0) {
-                    Board.board_tiels[row][col].setBackground(new Background(new BackgroundFill(Color.WHEAT, CornerRadii.EMPTY, Insets.EMPTY)));
-                } else {
-                    Board.board_tiels[row][col].setBackground(new Background(new BackgroundFill(Color.rgb(60, 20, 4), CornerRadii.EMPTY, Insets.EMPTY)));
-                }
-            }
-        }
+//        for (int row = 0; row < 8; row++) {
+//            for (int col = 0; col < 8; col++) {
+//                if ((row + col) % 2 == 0) {
+//                    Board.board_tiels[row][col].setBackground(new Background(new BackgroundFill(Color.WHEAT, CornerRadii.EMPTY, Insets.EMPTY)));
+//                } else {
+//                    Board.board_tiels[row][col].setBackground(new Background(new BackgroundFill(Color.rgb(60, 20, 4), CornerRadii.EMPTY, Insets.EMPTY)));
+//                }
+//            }
+//        }
         Game.isKingChecked = false;
         return false;
     }
@@ -435,7 +437,6 @@ public class Game {
                     Piece king = Board.board_tiels[row][col].getPiece().searchForKing();
                     if (king != null) {
                         System.out.println("Black King Checked");
-                        Board.board_tiels[king.row][king.col].setBackground(new Background(new BackgroundFill(Color.rgb(200, 7, 7), CornerRadii.EMPTY, Insets.EMPTY)));
 
                         Game.isKingChecked = true;
 
@@ -449,15 +450,15 @@ public class Game {
                 }
             }
         }
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                if ((row + col) % 2 == 0) {
-                    Board.board_tiels[row][col].setBackground(new Background(new BackgroundFill(Color.WHEAT, CornerRadii.EMPTY, Insets.EMPTY)));
-                } else {
-                    Board.board_tiels[row][col].setBackground(new Background(new BackgroundFill(Color.rgb(60, 20, 4), CornerRadii.EMPTY, Insets.EMPTY)));
-                }
-            }
-        }
+//        for (int row = 0; row < 8; row++) {
+//            for (int col = 0; col < 8; col++) {
+//                if ((row + col) % 2 == 0) {
+//                    Board.board_tiels[row][col].setBackground(new Background(new BackgroundFill(Color.WHEAT, CornerRadii.EMPTY, Insets.EMPTY)));
+//                } else {
+//                    Board.board_tiels[row][col].setBackground(new Background(new BackgroundFill(Color.rgb(60, 20, 4), CornerRadii.EMPTY, Insets.EMPTY)));
+//                }
+//            }
+//        }
         Game.isKingChecked = false;
 
         return false;
@@ -523,15 +524,21 @@ public class Game {
                 }
             }
 
-
             if (!kingCanMove && !piecesCanMove) {
                 System.out.println("GAME OVER Player Black Win");
                 Stage stage = new Stage();
                 Pane clossing = new Pane();
                 Scene scene = new Scene(clossing);
+                clossing.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
                 stage.setScene(scene);
                 Text text = new Text();
-                text.setText("Game Over");
+                text.setText("GAME OVER Player Black Win");
+                clossing.getChildren().add(text);
+                text.setFill(Color.WHITE);
+                text.setTextAlignment(TextAlignment.CENTER);
+
+                text.setLayoutY(100);
+                text.setFont(new Font(60));
                 stage.show();
                 Board.stage.close();
             }
