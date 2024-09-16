@@ -1,5 +1,10 @@
-![image](https://github.com/user-attachments/assets/5bfd851c-e290-4b58-ad93-f64f1f121723)# Chess
 ## About
+- This is a GUI chess game mainly made by JavaFX.
+- The game is 2 players using the same machine, with interactive design and pieces.
+- Designed the game structure using OOP pillars, and SOLID principles to improve the code design.
+- Implemented checkmate detection and interactive chessboard where piece movements illuminate upon mouse
+  interaction (not resulting in checkmate), utilizing JavaFX built-in functions.
+
 
 ## Screenshots
 ### Initial Setup
